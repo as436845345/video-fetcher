@@ -52,8 +52,17 @@ cd video-fetcher
 
 ### 2. 安装依赖
 
+**方式一：使用 pip**
+
 ```bash
 pip install -r requirements.txt
+```
+
+**方式二：使用 conda**
+
+```bash
+conda env create -f environment.yml
+conda activate video-fetcher
 ```
 
 ## 使用方法
