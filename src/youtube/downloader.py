@@ -94,7 +94,6 @@ def set_env(env_file: str | None):
     加载 .env 配置文件。
 
     支持配置:
-        FFmpeg
         Proxy
     """
 
@@ -109,27 +108,9 @@ def set_env(env_file: str | None):
     # 加载 .env 文件
     load_dotenv(path)
 
-    # 读取 ffmpeg 路径
-    ffmpeg = os.getenv("FFmpeg", None)
-    set_ffmpeg(ffmpeg)
-
     # 读取代理
     proxy = os.getenv("Proxy", None)
     set_proxy(proxy)
-
-
-def set_ffmpeg(ffmpeg: str | None):
-    """
-    设置 ffmpeg 路径。
-
-    yt-dlp 使用 ffmpeg 进行:
-        - 合并视频
-        - 转码
-        - 音频处理
-    """
-
-    # https://github.com/yt-dlp/yt-dlp/blob/master/yt_dlp/postprocessor/ffmpeg.py#L102
-    global_options["ffmpeg"] = ffmpeg
 
 
 def set_proxy(proxy: str | None):
@@ -263,7 +244,7 @@ def download_video(video_info: dict, output_dir: str | Path, resolution: int):
         return
 
     # yt-dlp 下载配置
-    ydl_opts = {
+    options = {
         # 代理
         "proxy": global_options.get("proxy"),
         # cookies
@@ -287,7 +268,7 @@ def download_video(video_info: dict, output_dir: str | Path, resolution: int):
     }
 
     # 创建 yt-dlp
-    with yt_dlp.YoutubeDL(ydl_opts) as downloader:  # type: ignore
+    with yt_dlp.YoutubeDL(options) as downloader:  # type: ignore
         # 下载视频
         downloader.download([video_info["webpage_url"]])
 
@@ -305,7 +286,7 @@ def main(
         str | None,
         typer.Option(
             "--env",
-            help="加载 .env 配置文件（可包含 Proxy、FFmpeg 等配置）",
+            help="加载 .env 配置文件（可包含 Proxy 等配置）",
         ),
     ] = None,
     output_dir: Annotated[
@@ -329,13 +310,6 @@ def main(
             help="最大视频分辨率，例如 720 / 1080 / 2160",
         ),
     ] = 1080,
-    ffmpeg: Annotated[
-        str | None,
-        typer.Option(
-            "--ffmpeg",
-            help="ffmpeg 可执行文件路径（用于合并视频和音频）",
-        ),
-    ] = None,
     proxy: Annotated[
         str | None,
         typer.Option(
@@ -398,8 +372,6 @@ def main(
 
     # 写入配置
     global_options["output_name"] = output_name
-    # 设置 ffmpeg
-    set_ffmpeg(ffmpeg)
     # 设置 proxy
     set_proxy(proxy)
     # 设置 cookies

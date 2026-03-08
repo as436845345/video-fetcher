@@ -39,7 +39,6 @@ YouTube 视频下载工具，基于 yt-dlp 实现。
 - yt-dlp
 - typer
 - python-dotenv
-- ffmpeg（可选，用于视频后处理）
 
 ## 安装说明
 
@@ -113,7 +112,7 @@ python youtube/downloader.py "https://www.youtube.com/watch?v=0xxrBVFNKeY" --sav
 python youtube/downloader.py "https://www.youtube.com/watch?v=0xxrBVFNKeY" --metadata-only
 
 # 完整示例
-python youtube/downloader.py "https://www.youtube.com/watch?v=0xxrBVFNKeY" --proxy socks5://127.0.0.1:10808 --cookies "C:\Env\www.youtube.com_cookies.txt" --ffmpeg "C:\Env\ffmpeg-master-latest-win64-gpl\bin" --output_dir "C:\Users\25703\Desktop\项目\video-fetcher-datas" --save-info-json --save-thumbnail --metadata-only
+python youtube/downloader.py "https://www.youtube.com/watch?v=0xxrBVFNKeY" --proxy socks5://127.0.0.1:10808 --cookies "C:\Env\www.youtube.com_cookies.txt" --output_dir "C:\Users\25703\Desktop\项目\video-fetcher-datas" --save-info-json --save-thumbnail --metadata-only
 ```
 
 ## 命令行参数
@@ -125,7 +124,6 @@ python youtube/downloader.py "https://www.youtube.com/watch?v=0xxrBVFNKeY" --pro
 | `--output-dir`     | 选项     | `.`        | 视频下载保存目录                                                           |
 | `--output-name`    | 选项     | `download` | 输出文件名模板                                                             |
 | `--resolution`     | 选项     | `1080`     | 期望下载的视频最大分辨率（如 720、1080、2160）                             |
-| `--ffmpeg`         | 选项     | 无           | 手动指定 ffmpeg 可执行文件路径                                             |
 | `--proxy`          | 选项     | 无           | 设置网络代理（如 `http://127.0.0.1:7890`、`socks5://127.0.0.1:10808`） |
 | `--cookies`        | 选项     | 无           | Cookie 文件路径（Netscape 格式）                                           |
 | `--js-runtime`     | 选项     | `node`     | JS 运行时类型：`node` / `deno` / `bun` / `quickjs`                 |
@@ -138,9 +136,6 @@ python youtube/downloader.py "https://www.youtube.com/watch?v=0xxrBVFNKeY" --pro
 可通过 `--env` 参数指定 `.env` 配置文件，支持以下环境变量：
 
 ```env
-# ffmpeg 路径
-FFmpeg=C:\Env\ffmpeg-master-latest-win64-gpl\bin
-
 # 代理地址
 Proxy=socks5://127.0.0.1:10808
 ```
