@@ -1,8 +1,8 @@
 # video-fetcher
 
-YouTube 视频下载工具，基于 yt-dlp 实现。
+## 简介
 
----
+YouTube 视频下载工具，基于 yt-dlp 实现。
 
 ## 目录
 
@@ -15,6 +15,7 @@ YouTube 视频下载工具，基于 yt-dlp 实现。
 - [命令行参数](#命令行参数)
 - [环境配置文件](#环境配置文件)
 - [高级功能文档](#高级功能文档)
+- [获取 YouTube Cookie](#获取-youtube-cookie)
 
 ## 功能特性
 
@@ -65,6 +66,23 @@ conda env create -f environment.yml
 conda activate video-fetcher
 ```
 
+### 3. 获取 YouTube Cookie
+
+Cookie 文件用于访问会员专享内容、年龄限制视频或避免 YouTube 请求限制。
+
+#### 快速步骤
+
+1. **安装 Chrome 浏览器**：[下载链接](https://www.google.com/intl/zh-CN/chrome/)
+2. **安装插件**：[Get cookies.txt LOCALLY](https://chrome.google.com/webstore/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc)
+3. **登录 YouTube**：访问 https://www.youtube.com 并登录账号
+4. **导出 Cookie**：点击插件图标 → 点击 "Export" 按钮
+
+#### 详细教程
+
+查看完整图文教程：[`docs/yt-dlp/获取Youtube的Cookie文件.md`](docs/yt-dlp/获取Youtube的Cookie文件.md)
+
+> **注意**：Cookie 文件会过期，如遇到访问失败请重新导出。
+
 ## 使用方法
 
 执行文件位于 `src/` 目录下：
@@ -101,20 +119,20 @@ python youtube/downloader.py "https://www.youtube.com/watch?v=0xxrBVFNKeY" --pro
 
 ## 命令行参数
 
-| 参数                 | 类型     | 默认值     | 说明                                                                       |
-| -------------------- | -------- | ---------- | -------------------------------------------------------------------------- |
-| `urls`             | 位置参数 | 必填       | 视频地址列表，支持多个地址（空格、逗号或分号分隔）                         |
-| `--env`            | 选项     | 无         | 环境配置文件路径（.env 文件）                                              |
-| `--output-dir`     | 选项     | `.`      | 视频下载保存目录                                                           |
+| 参数                 | 类型     | 默认值       | 说明                                                                       |
+| -------------------- | -------- | ------------ | -------------------------------------------------------------------------- |
+| `urls`             | 位置参数 | 必填         | 视频地址列表，支持多个地址（空格、逗号或分号分隔）                         |
+| `--env`            | 选项     | 无           | 环境配置文件路径（.env 文件）                                              |
+| `--output-dir`     | 选项     | `.`        | 视频下载保存目录                                                           |
 | `--output-name`    | 选项     | `download` | 输出文件名模板                                                             |
-| `--resolution`     | 选项     | `1080`   | 期望下载的视频最大分辨率（如 720、1080、2160）                             |
-| `--ffmpeg`         | 选项     | 无         | 手动指定 ffmpeg 可执行文件路径                                             |
-| `--proxy`          | 选项     | 无         | 设置网络代理（如 `http://127.0.0.1:7890`、`socks5://127.0.0.1:10808`） |
-| `--cookies`        | 选项     | 无         | Cookie 文件路径（Netscape 格式）                                           |
-| `--js-runtime`     | 选项     | `node`   | JS 运行时类型：`node` / `deno` / `bun` / `quickjs`                 |
-| `--save-info-json` | 选项     | `False`  | 保存 yt-dlp 提取的视频 metadata JSON                                       |
-| `--save-thumbnail` | 选项     | `False`  | 下载视频缩略图                                                             |
-| `--metadata-only`  | 选项     | `False`  | 仅获取视频元信息，不下载视频                                               |
+| `--resolution`     | 选项     | `1080`     | 期望下载的视频最大分辨率（如 720、1080、2160）                             |
+| `--ffmpeg`         | 选项     | 无           | 手动指定 ffmpeg 可执行文件路径                                             |
+| `--proxy`          | 选项     | 无           | 设置网络代理（如 `http://127.0.0.1:7890`、`socks5://127.0.0.1:10808`） |
+| `--cookies`        | 选项     | 无           | Cookie 文件路径（Netscape 格式）                                           |
+| `--js-runtime`     | 选项     | `node`     | JS 运行时类型：`node` / `deno` / `bun` / `quickjs`                 |
+| `--save-info-json` | 选项     | `False`    | 保存 yt-dlp 提取的视频 metadata JSON                                       |
+| `--save-thumbnail` | 选项     | `False`    | 下载视频缩略图                                                             |
+| `--metadata-only`  | 选项     | `False`    | 仅获取视频元信息，不下载视频                                               |
 
 ## 环境配置文件
 
@@ -162,7 +180,7 @@ python youtube/downloader.py "https://www.youtube.com/watch?v=xxx" --proxy socks
 
 | 运行时  | 可执行文件 | 最低支持版本 | 优先级           |
 | ------- | ---------- | ------------ | ---------------- |
-| node    | `node`   | 20.0.0       | 最高（默认启用）  |
+| node    | `node`   | 20.0.0       | 最高（默认启用） |
 | deno    | `deno`   | 2.0.0        | 高               |
 | quickjs | `qjs`    | 2023.12.9    | 中               |
 | bun     | `bun`    | 1.0.31       | 低               |
@@ -266,6 +284,7 @@ python youtube/downloader.py "https://www.youtube.com/watch?v=xxx" --save-info-j
 #### 功能说明
 
 `--metadata-only` 选项用于仅获取视频元信息而不下载实际的视频/音频文件。适用于：
+
 - 快速收集视频统计数据
 - 批量分析播放列表
 - 生成视频索引
@@ -279,3 +298,5 @@ python youtube/downloader.py "https://www.youtube.com/watch?v=xxx" --metadata-on
 # 保存为 JSON
 python youtube/downloader.py "https://www.youtube.com/watch?v=xxx" --metadata-only --save-info-json
 ```
+
+---
