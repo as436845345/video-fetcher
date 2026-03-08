@@ -75,26 +75,32 @@ python youtube/downloader.py "https://www.youtube.com/watch?v=0xxrBVFNKeY" --res
 # 使用代理和 Cookie
 python youtube/downloader.py "https://www.youtube.com/watch?v=0xxrBVFNKeY" --proxy socks5://127.0.0.1:10808 --cookies "C:\Env\www.youtube.com_cookies.txt"
 
-# 将视频信息保存为 JSON
-python youtube/downloader.py "https://www.youtube.com/watch?v=0xxrBVFNKeY" --metadata-to-json video_info.json
+# 保存视频元信息 JSON 和缩略图
+python youtube/downloader.py "https://www.youtube.com/watch?v=0xxrBVFNKeY" --save-info-json --save-thumbnail
+
+# 仅获取元信息（不下载视频）
+python youtube/downloader.py "https://www.youtube.com/watch?v=0xxrBVFNKeY" --metadata-only
 
 # 完整示例
-python youtube/downloader.py "https://www.youtube.com/watch?v=0xxrBVFNKeY" --proxy socks5://127.0.0.1:10808 --cookies "C:\Env\www.youtube.com_cookies.txt" --ffmpeg "C:\Env\ffmpeg-master-latest-win64-gpl\bin" --js-runtime node --metadata-to-json info.json
+python youtube/downloader.py "https://www.youtube.com/watch?v=0xxrBVFNKeY" --proxy socks5://127.0.0.1:10808 --cookies "C:\Env\www.youtube.com_cookies.txt" --ffmpeg "C:\Env\ffmpeg-master-latest-win64-gpl\bin" --output_dir "C:\Users\25703\Desktop\项目\video-fetcher-datas" --save-info-json --save-thumbnail --metadata-only
 ```
 
 ## 命令行参数
 
-| 参数                   | 类型     | 默认值     | 说明                                                                       |
-| ---------------------- | -------- | ---------- | -------------------------------------------------------------------------- |
-| `urls`               | 位置参数 | 必填       | 视频地址列表，支持多个地址（空格、逗号或分号分隔）                         |
-| `--env`              | 选项     | 无         | 环境配置文件路径（.env 文件）                                              |
-| `--folder`           | 选项     | `videos` | 视频下载保存目录（当前版本仅预留参数）                                     |
-| `--resolution`       | 选项     | `1080`   | 期望下载的视频最大分辨率（如 720、1080、2160）                             |
-| `--ffmpeg`           | 选项     | 无         | 手动指定 ffmpeg 可执行文件路径                                             |
-| `--proxy`            | 选项     | 无         | 设置网络代理（如 `http://127.0.0.1:7890`、`socks5://127.0.0.1:10808`） |
-| `--cookies`          | 选项     | 无         | Cookie 文件路径（Netscape 格式）                                           |
-| `--js-runtime`       | 选项     | 无         | JS 运行时类型：`node` / `deno` / `bun` / `quickjs`                 |
-| `--metadata-to-json` | 选项     | 无         | 将 yt-dlp 返回的完整视频信息保存为 JSON 文件                               |
+| 参数                 | 类型     | 默认值     | 说明                                                                       |
+| -------------------- | -------- | ---------- | -------------------------------------------------------------------------- |
+| `urls`             | 位置参数 | 必填       | 视频地址列表，支持多个地址（空格、逗号或分号分隔）                         |
+| `--env`            | 选项     | 无         | 环境配置文件路径（.env 文件）                                              |
+| `--output-dir`     | 选项     | `.`      | 视频下载保存目录                                                           |
+| `--output-name`    | 选项     | `download` | 输出文件名模板                                                             |
+| `--resolution`     | 选项     | `1080`   | 期望下载的视频最大分辨率（如 720、1080、2160）                             |
+| `--ffmpeg`         | 选项     | 无         | 手动指定 ffmpeg 可执行文件路径                                             |
+| `--proxy`          | 选项     | 无         | 设置网络代理（如 `http://127.0.0.1:7890`、`socks5://127.0.0.1:10808`） |
+| `--cookies`        | 选项     | 无         | Cookie 文件路径（Netscape 格式）                                           |
+| `--js-runtime`     | 选项     | `node`   | JS 运行时类型：`node` / `deno` / `bun` / `quickjs`                 |
+| `--save-info-json` | 选项     | `False`  | 保存 yt-dlp 提取的视频 metadata JSON                                       |
+| `--save-thumbnail` | 选项     | `False`  | 下载视频缩略图                                                             |
+| `--metadata-only`  | 选项     | `False`  | 仅获取视频元信息，不下载视频                                               |
 
 ## 环境配置文件
 
@@ -175,11 +181,11 @@ python youtube/downloader.py "https://www.youtube.com/watch?v=xxx" --js-runtime 
 
 ---
 
-### 元信息导出 (`--metadata-to-json`)
+### 元信息导出 (`--save-info-json`)
 
 #### 功能说明
 
-`--metadata-to-json` 选项用于将 yt-dlp 返回的完整视频元信息保存为 JSON 文件，便于后续处理或分析。
+`--save-info-json` 选项用于将 yt-dlp 返回的完整视频元信息保存为 JSON 文件（与视频同目录），便于后续处理或分析。
 
 #### 导出的信息字段
 
@@ -194,31 +200,68 @@ python youtube/downloader.py "https://www.youtube.com/watch?v=xxx" --js-runtime 
 
 ```bash
 # 保存单个视频信息
-python youtube/downloader.py "https://www.youtube.com/watch?v=xxx" --metadata-to-json video_info.json
+python youtube/downloader.py "https://www.youtube.com/watch?v=xxx" --save-info-json
 
 # 保存播放列表信息
-python youtube/downloader.py "https://www.youtube.com/playlist?list=PLxxx" --metadata-to-json playlist_info.json
+python youtube/downloader.py "https://www.youtube.com/playlist?list=PLxxx" --save-info-json
 
 # 结合其他参数使用
-python youtube/downloader.py "https://www.youtube.com/watch?v=xxx" --proxy socks5://127.0.0.1:10808 --cookies cookies.txt --metadata-to-json info.json
+python youtube/downloader.py "https://www.youtube.com/watch?v=xxx" --proxy socks5://127.0.0.1:10808 --cookies cookies.txt --save-info-json
 ```
 
 #### JSON 文件结构示例
 
 ```json
-[
-  {
-    "id": "video_id",
-    "title": "视频标题",
-    "description": "视频描述...",
-    "duration": 180,
-    "uploader": "上传者名称",
-    "upload_date": "20240101",
-    "view_count": 1000000,
-    "like_count": 50000,
-    "thumbnail": "https://i.ytimg.com/vi/xxx/maxresdefault.jpg",
-    "formats": [...],
-    "tags": ["tag1", "tag2"]
-  }
-]
+{
+  "id": "video_id",
+  "title": "视频标题",
+  "description": "视频描述...",
+  "duration": 180,
+  "uploader": "上传者名称",
+  "upload_date": "20240101",
+  "view_count": 1000000,
+  "like_count": 50000,
+  "thumbnail": "https://i.ytimg.com/vi/xxx/maxresdefault.jpg",
+  "formats": [...],
+  "tags": ["tag1", "tag2"]
+}
+```
+
+---
+
+### 缩略图下载 (`--save-thumbnail`)
+
+#### 功能说明
+
+`--save-thumbnail` 选项用于下载视频缩略图并保存为本地文件（与视频同目录）。
+
+#### 使用示例
+
+```bash
+# 下载缩略图
+python youtube/downloader.py "https://www.youtube.com/watch?v=xxx" --save-thumbnail
+
+# 同时保存元信息和缩略图
+python youtube/downloader.py "https://www.youtube.com/watch?v=xxx" --save-info-json --save-thumbnail
+```
+
+---
+
+### 仅获取元信息 (`--metadata-only`)
+
+#### 功能说明
+
+`--metadata-only` 选项用于仅获取视频元信息而不下载实际的视频/音频文件。适用于：
+- 快速收集视频统计数据
+- 批量分析播放列表
+- 生成视频索引
+
+#### 使用示例
+
+```bash
+# 仅获取元信息
+python youtube/downloader.py "https://www.youtube.com/watch?v=xxx" --metadata-only
+
+# 保存为 JSON
+python youtube/downloader.py "https://www.youtube.com/watch?v=xxx" --metadata-only --save-info-json
 ```
