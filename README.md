@@ -31,11 +31,11 @@ YouTube 视频下载工具，基于 yt-dlp 实现。
 
 ## 开发环境
 
-- conda Python 3.12
+- conda Python 3.10
 
 ## 环境要求
 
-- Python 3.12+
+- Python 3.10+
 - yt-dlp
 - typer
 - python-dotenv
@@ -162,8 +162,8 @@ python youtube/downloader.py "https://www.youtube.com/watch?v=xxx" --proxy socks
 
 | 运行时  | 可执行文件 | 最低支持版本 | 优先级           |
 | ------- | ---------- | ------------ | ---------------- |
-| deno    | `deno`   | 2.0.0        | 最高（默认启用） |
-| node    | `node`   | 20.0.0       | 高               |
+| node    | `node`   | 20.0.0       | 最高（默认启用）  |
+| deno    | `deno`   | 2.0.0        | 高               |
 | quickjs | `qjs`    | 2023.12.9    | 中               |
 | bun     | `bun`    | 1.0.31       | 低               |
 
