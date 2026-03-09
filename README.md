@@ -39,6 +39,7 @@ YouTube 视频下载工具，基于 yt-dlp 实现。
 - yt-dlp
 - typer
 - python-dotenv
+- ffmpeg（可选，用于视频后处理）
 
 ## 安装说明
 
@@ -112,7 +113,7 @@ python youtube/downloader.py "https://www.youtube.com/watch?v=0xxrBVFNKeY" --sav
 python youtube/downloader.py "https://www.youtube.com/watch?v=0xxrBVFNKeY" --metadata-only
 
 # 完整示例
-python youtube/downloader.py "https://www.youtube.com/watch?v=0xxrBVFNKeY" --proxy socks5://127.0.0.1:10808 --cookies "C:\Env\www.youtube.com_cookies.txt" --output-dir "C:\Users\25703\Desktop\项目\video-fetcher-datas" --save-info-json --save-thumbnail --metadata-only
+python youtube/downloader.py "https://www.youtube.com/watch?v=0xxrBVFNKeY" --output-dir "C:\Users\25703\Desktop\项目\video-fetcher-datas" --ffmpeg "C:\Env\ffmpeg-master-latest-win64-gpl\bin" --proxy socks5://127.0.0.1:10808 --cookies "C:\Env\www.youtube.com_cookies.txt" --save-info-json --save-thumbnail --metadata-only
 ```
 
 ## 命令行参数
@@ -124,6 +125,7 @@ python youtube/downloader.py "https://www.youtube.com/watch?v=0xxrBVFNKeY" --pro
 | `--output-dir`     | 选项     | `.`        | 视频下载保存目录                                                           |
 | `--output-name`    | 选项     | `download` | 输出文件名模板                                                             |
 | `--resolution`     | 选项     | `1080`     | 期望下载的视频最大分辨率（如 720、1080、2160）                             |
+| `--ffmpeg`         | 选项     | 无           | 手动指定 ffmpeg 可执行文件路径                                          |
 | `--proxy`          | 选项     | 无           | 设置网络代理（如 `http://127.0.0.1:7890`、`socks5://127.0.0.1:10808`） |
 | `--cookies`        | 选项     | 无           | Cookie 文件路径（Netscape 格式）                                           |
 | `--js-runtime`     | 选项     | `node`     | JS 运行时类型：`node` / `deno` / `bun` / `quickjs`                 |
@@ -136,6 +138,9 @@ python youtube/downloader.py "https://www.youtube.com/watch?v=0xxrBVFNKeY" --pro
 可通过 `--env` 参数指定 `.env` 配置文件，支持以下环境变量：
 
 ```env
+# ffmpeg 路径
+FFmpeg=C:\Env\ffmpeg-master-latest-win64-gpl\bin
+
 # 代理地址
 Proxy=socks5://127.0.0.1:10808
 ```
@@ -143,6 +148,44 @@ Proxy=socks5://127.0.0.1:10808
 ---
 
 ## 高级功能文档
+
+### FFmpeg 支持 (`--ffmpeg`)
+
+#### 功能说明
+
+`--ffmpeg` 选项用于手动指定 FFmpeg 可执行文件路径。FFmpeg 用于视频后处理，包括：
+
+- 合并分离的视频和音频流（yt-dlp 默认分别下载最高画质的视频流和音频流）
+- 视频格式转换
+- 音频提取
+- 视频剪辑等
+
+当系统环境变量中已配置 FFmpeg 时，此选项可不设置。
+
+#### 使用示例
+
+```bash
+# 指定 FFmpeg 路径
+python youtube/downloader.py "https://www.youtube.com/watch?v=xxx" --ffmpeg "C:\Env\ffmpeg-master-latest-win64-gpl\bin\ffmpeg.exe"
+
+# 结合其他参数使用
+python youtube/downloader.py "https://www.youtube.com/watch?v=xxx" --ffmpeg "C:\Env\ffmpeg-master-latest-win64-gpl\bin" --resolution 1080 --save-info-json
+```
+
+#### 环境变量配置
+
+也可在 `.env` 配置文件中设置 `FFmpeg` 环境变量：
+
+```env
+FFmpeg=C:\Env\ffmpeg-master-latest-win64-gpl\bin
+```
+
+#### 注意事项
+
+- Windows 用户需确保 FFmpeg 已添加到系统 PATH，或通过此选项指定路径
+- 推荐下载 [yt-dlp 推荐的 FFmpeg 构建](https://github.com/yt-dlp/FFmpeg-Builds/releases)
+
+---
 
 ### Cookie 文件支持 (`--cookies`)
 
