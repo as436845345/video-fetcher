@@ -112,7 +112,7 @@ python youtube/downloader.py "https://www.youtube.com/watch?v=0xxrBVFNKeY" --sav
 python youtube/downloader.py "https://www.youtube.com/watch?v=0xxrBVFNKeY" --metadata-only
 
 # 完整示例
-python youtube/downloader.py "https://www.youtube.com/watch?v=0xxrBVFNKeY" --proxy socks5://127.0.0.1:10808 --cookies "C:\Env\www.youtube.com_cookies.txt" --output_dir "C:\Users\25703\Desktop\项目\video-fetcher-datas" --save-info-json --save-thumbnail --metadata-only
+python youtube/downloader.py "https://www.youtube.com/watch?v=0xxrBVFNKeY" --proxy socks5://127.0.0.1:10808 --cookies "C:\Env\www.youtube.com_cookies.txt" --output-dir "C:\Users\25703\Desktop\项目\video-fetcher-datas" --save-info-json --save-thumbnail --metadata-only
 ```
 
 ## 命令行参数

@@ -178,8 +178,6 @@ def get_videos_info(url_list: list[str]):
         "cookiefile": global_options.get("cookies"),
         # js runtime
         "js_runtimes": global_options.get("js-runtime"),
-        # 详细日志
-        "verbose": True,
     }
 
     # 存储所有视频信息
@@ -236,7 +234,7 @@ def download_video(video_info: dict, output_dir: str | Path, resolution: int):
         return
 
     # 构造输出目录
-    output_folder = output_dir / uploader / f"{upload_date} {title}"  # type: ignore
+    output_folder = Path(output_dir) / uploader / f"{upload_date} {title}"  # type: ignore
 
     # 判断是否已经下载
     if os.path.exists(os.path.join(output_folder, "download.mp4")):
@@ -258,11 +256,11 @@ def download_video(video_info: dict, output_dir: str | Path, resolution: int):
         # 下载缩略图
         "writethumbnail": global_options["save-thumbnail"],
         # 输出模板
-        "outtmpl": output_folder / global_options["output_name"],
+        "outtmpl": os.path.join(output_folder, global_options["output_name"]),
+        # 是否仅 metadata
+        "skip_download": global_options["metadata_only"],
         # 忽略错误
         "ignoreerrors": True,
-        # 是否仅 metadata
-        "skip_download": not global_options["metadata_only"],
         # 详细日志
         "verbose": True,
     }
